@@ -20,7 +20,7 @@ public class SignalFlowGraph {
 
     public ArrayList<ArrayList<Pair<Integer, Double>>> getGraph() {
         int n, k;
-        System.out.print("P.S: Nodes must be from 0 to n where 0 is src.\n");
+        System.out.print("P.S: Nodes must be from 0 to n-1 inclusive where 0 is Source.\n");
         System.out.print("Enter Number of Nodes: ");
         Scanner scanner = new Scanner(System.in);
         n = scanner.nextInt();
@@ -28,7 +28,7 @@ public class SignalFlowGraph {
         k = scanner.nextInt();
         System.out.print("Enter every two connected nodes and their weight:\n");
         graph = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
+        for (int i = 0; i < n; i++) {
             ArrayList<Pair<Integer, Double>> b = new ArrayList<>();
             graph.add(b);
         }
@@ -46,17 +46,19 @@ public class SignalFlowGraph {
         forwardPathsNodes = (ArrayList<ArrayList<Integer>>) traceNodes.clone();
         trace.clear();
         traceNodes.clear();
-        for (int i = 0; i <= n; i++) {
+        for (int i = 0; i < n; i++) {
             temp.clear();
             nodes.clear();
             dfs(i, i, true, true);
         }
         loops = (ArrayList<ArrayList<Double>>) trace.clone();
         loopsNodes = (ArrayList<ArrayList<Integer>>) traceNodes.clone();
+        /*
         System.out.println(forwardPathsNodes);
         System.out.println(forwardPaths);
         System.out.println(loopsNodes);
         System.out.println(loops);
+        */
         System.out.println("Total Transfer Function: " + getMasonFormula());
         return graph;
     }
@@ -97,7 +99,7 @@ public class SignalFlowGraph {
             m += pi;
         }
         double delta = getDetermirnti(new ArrayList<Integer>());
-        System.out.println(delta);
+        //System.out.println(delta);
         return m / delta;
     }
 
