@@ -25,14 +25,14 @@ public class Main extends Application {
         Graph<String, String> g = new DigraphEdgeList<>();
 //... see example below
         SignalFlowGraph signalFlowGraph=new SignalFlowGraph();
-        ArrayList<ArrayList<Pair<Integer,Integer>>> graph=signalFlowGraph.getGraph();
+        ArrayList<ArrayList<Pair<Integer,Double>>> graph=signalFlowGraph.getGraph();
         HashMap<String,Integer>stringHashMap=new HashMap<>();
         for (int i=0;i<graph.size();i++)
             g.insertVertex(Integer.toString(i));
         for (int i=0;i<graph.size();i++)
         {
             for (int j = 0; j < graph.get(i).size(); j++) {
-                String edge=Integer.toString(graph.get(i).get(j).getValue());
+                String edge=Double.toString(graph.get(i).get(j).getValue());
                 if(stringHashMap.containsKey(edge))
                 {
                     for (int k = 0; k < stringHashMap.get(edge); k++) {
@@ -44,7 +44,6 @@ public class Main extends Application {
                 g.insertEdge(Integer.toString(i),Integer.toString(graph.get(i).get(j).getKey()),edge);
             }
         }
-
         SmartPlacementStrategy strategy = new SmartCircularSortedPlacementStrategy();
         SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(g, strategy);
         Scene scene = new Scene(graphView, 800, 600);
