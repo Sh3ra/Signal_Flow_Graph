@@ -11,8 +11,11 @@ public class SignalFlowGraph {
     ArrayList<ArrayList<Pair<Integer,Integer>>> graph;
     int src=0,des;
     ArrayList<ArrayList<Integer>> forwardPaths =new ArrayList<>();
+    ArrayList<ArrayList<Integer>> forwardPathsNodes =new ArrayList<>();
     ArrayList<ArrayList<Integer>> loops =new ArrayList<>();
+    ArrayList<ArrayList<Integer>> loopsNodes =new ArrayList<>();
     ArrayList<ArrayList<Integer>> trace =new ArrayList<>();
+    ArrayList<ArrayList<Integer>> traceNodes =new ArrayList<>();
 
 
     ArrayList<ArrayList<Pair<Integer,Integer>>>  getGraph(){
@@ -37,13 +40,20 @@ public class SignalFlowGraph {
 
         dfs(src,des,true,false);
         forwardPaths = (ArrayList<ArrayList<Integer>>) trace.clone();
+        forwardPathsNodes = (ArrayList<ArrayList<Integer>>) traceNodes.clone();
         trace.clear();
+        traceNodes.clear();
         for (int i = 0; i <=n ; i++) {
             temp.clear();
             nodes.clear();
             dfs(i,i,true,true);
         }
         loops = (ArrayList<ArrayList<Integer>>) trace.clone();
+        loopsNodes = (ArrayList<ArrayList<Integer>>) traceNodes.clone();
+        System.out.println(forwardPathsNodes);
+        System.out.println(forwardPaths);
+        System.out.println(loopsNodes);
+        System.out.println(loops);
         return graph;
     }
 
@@ -53,9 +63,12 @@ public class SignalFlowGraph {
          if(src==des){
              if(!firstTime) {
                  ArrayList<Integer> myObject = (ArrayList<Integer>) temp.clone();
+                 ArrayList<Integer> myNodes = (ArrayList<Integer>) nodes.clone();
                  if (loop) Collections.sort(myObject);
-                 if(!trace.contains(myObject))
-                    trace.add(myObject);
+                 if(!trace.contains(myObject)){
+                     trace.add(myObject);
+                     traceNodes.add(myNodes);
+                 }
                  return;
              }
          }
@@ -72,8 +85,26 @@ public class SignalFlowGraph {
 
     int getMasonFormula(){
         int m=0;
+        for (int i = 0; i < forwardPaths.size(); i++) {
+            int pi=1;
+            for (int j = 0; j < forwardPaths.get(i).size(); j++) {
+                pi*=forwardPaths.get(i).get(j);
+            }
+            pi*=getDetermirnti(forwardPaths.get(i));
+            m+=pi;
+            pi=1;
+        }
 
-        return m;
+        return m/getDetermirnti(null);
+    }
+
+    private int getDetermirnti(ArrayList<Integer> integers) {
+        int d=0;
+        if(integers!=null)
+        {
+
+        }
+        return 0;
     }
 
 }
