@@ -12,6 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main extends Application {
 
@@ -20,39 +24,27 @@ public class Main extends Application {
         //create the graph
         Graph<String, String> g = new DigraphEdgeList<>();
 //... see example below
+        SignalFlowGraph signalFlowGraph=new SignalFlowGraph();
+        ArrayList<ArrayList<Pair<Integer,Integer>>> graph=signalFlowGraph.getGraph();
+        HashMap<String,Integer>stringHashMap=new HashMap<>();
+        for (int i=0;i<graph.size();i++)
+            g.insertVertex(Integer.toString(i));
+        for (int i=0;i<graph.size();i++)
+        {
+            for (int j = 0; j < graph.get(i).size(); j++) {
+                String edge=Integer.toString(graph.get(i).get(j).getValue());
+                if(stringHashMap.containsKey(edge))
+                {
+                    for (int k = 0; k < stringHashMap.get(edge); k++) {
+                        edge+=" ";
+                    }
+                    stringHashMap.replace(edge,stringHashMap.get(edge),stringHashMap.get(edge)+1);
+                }
+                else stringHashMap.put(edge,1);
+                g.insertEdge(Integer.toString(i),Integer.toString(graph.get(i).get(j).getKey()),edge);
+            }
+        }
 
-        g.insertVertex("A");
-        g.insertVertex("B");
-        g.insertVertex("C");
-        g.insertVertex("D");
-        g.insertVertex("E");
-        g.insertVertex("F");
-        g.insertVertex("G");
-
-        g.insertEdge("A", "B", "1");
-        g.insertEdge("A", "C", "2");
-        g.insertEdge("A", "D", "3");
-        g.insertEdge("A", "E", "4");
-        g.insertEdge("A", "F", "5");
-        g.insertEdge("A", "G", "6");
-        g.insertEdge("A", "G", "6 ");
-
-        g.insertVertex("H");
-        g.insertVertex("I");
-        g.insertVertex("J");
-        g.insertVertex("K");
-        g.insertVertex("L");
-        g.insertVertex("M");
-        g.insertVertex("N");
-
-        g.insertEdge("H", "I", "7");
-        g.insertEdge("H", "J", "8");
-        g.insertEdge("H", "K", "9");
-        g.insertEdge("H", "L", "10");
-        g.insertEdge("H", "M", "11");
-        g.insertEdge("H", "N", "12");
-
-        g.insertEdge("A", "H", "0");
         SmartPlacementStrategy strategy = new SmartCircularSortedPlacementStrategy();
         SmartGraphPanel<String, String> graphView = new SmartGraphPanel<>(g, strategy);
         Scene scene = new Scene(graphView, 800, 600);

@@ -15,7 +15,7 @@ public class SignalFlowGraph {
     ArrayList<ArrayList<Integer>> trace =new ArrayList<>();
 
 
-    void getGraph(){
+    ArrayList<ArrayList<Pair<Integer,Integer>>>  getGraph(){
         int n,k;
         System.out.print("P.S: Nodes must be from 0 to n where 0 is src.\n");
         System.out.print("Enter Number of Nodes: ");
@@ -44,6 +44,7 @@ public class SignalFlowGraph {
             dfs(i,i,true,true);
         }
         loops = (ArrayList<ArrayList<Integer>>) trace.clone();
+        return graph;
     }
 
     ArrayList<Integer>temp=new ArrayList<>();
