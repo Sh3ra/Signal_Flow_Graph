@@ -1,6 +1,7 @@
 package PartOne;
 
 import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -32,7 +33,8 @@ public class SignalFlowGraph {
             graph.add(b);
         }
         for (int i = 0; i < k; i++) {
-            int x = scanner.nextInt(), y = scanner.nextInt();double z = scanner.nextInt();
+            int x = scanner.nextInt(), y = scanner.nextInt();
+            double z = scanner.nextInt();
             graph.get(x).add(new Pair<>(y, z));
         }
         for (ArrayList<Pair<Integer, Double>> i : graph) {
@@ -55,7 +57,7 @@ public class SignalFlowGraph {
         System.out.println(forwardPaths);
         System.out.println(loopsNodes);
         System.out.println(loops);
-        System.out.println("Total Transfer Function: "+getMasonFormula());
+        System.out.println("Total Transfer Function: " + getMasonFormula());
         return graph;
     }
 
@@ -77,7 +79,7 @@ public class SignalFlowGraph {
         }
         if (nodes.contains(src)) return;
         for (int i = 0; i < graph.get(src).size(); i++) {
-            firstTime=false;
+            firstTime = false;
             nodes.add(src);
             temp.add(graph.get(src).get(i).getValue());
             dfs(graph.get(src).get(i).getKey(), des, firstTime, loop);
@@ -90,19 +92,17 @@ public class SignalFlowGraph {
         double m = 0;
         for (int i = 0; i < forwardPaths.size(); i++) {
             double pi = 1;
-            for (int j = 0; j < forwardPaths.get(i).size(); j++) {
-                pi *= forwardPaths.get(i).get(j);
-            }
+            pi *= getGain(forwardPaths.get(i));
             pi *= getDetermirnti(forwardPathsNodes.get(i));
             m += pi;
         }
-        double delta=getDetermirnti(new ArrayList<Integer>());
+        double delta = getDetermirnti(new ArrayList<Integer>());
         System.out.println(delta);
-        return m /delta ;
+        return m / delta;
     }
 
     private double getGain(ArrayList<Double> arrayList) {
-        int ans = 1;
+        double ans = 1;
         for (Double i : arrayList) {
             ans *= i;
         }
@@ -132,11 +132,11 @@ public class SignalFlowGraph {
     int tempGain = 0;
 
     private void getGainUntouchingLoops(ArrayList<Integer> path, int index, int maxSize, ArrayList<Integer> temp) {
-        ArrayList<Integer>newArray= (ArrayList<Integer>) temp.clone();
+        ArrayList<Integer> newArray = (ArrayList<Integer>) temp.clone();
         if (temp.size() == maxSize) {
             int t = 1;
             for (int i = 0; i < maxSize; i++) {
-                t*=getGain(loops.get(newArray.get(i)));
+                t *= getGain(loops.get(newArray.get(i)));
             }
             tempGain += t;
             return;
